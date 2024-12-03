@@ -1,0 +1,5 @@
+model:
+  name: "KNeighborsClassifier"
+  parameters:
+    n_neighbors: 5
+    metric: 'minkowski'

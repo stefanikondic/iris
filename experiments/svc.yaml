@@ -1,0 +1,6 @@
+model:
+  name: "SVC"
+  parameters:
+    kernel: 'rbf'
+    gamma: "scale"
+    random_state: 42
