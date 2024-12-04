@@ -2,7 +2,7 @@ from src.data.pipeline import Pipeline
 
 DATA_PATH = "data/raw/iris.csv"
 EXPERIMENTS_DIR = "experiments"
-OUTPUT_DIR = "outputs/metrics"
+OUTPUT_DIR = "outputs"
 TARGET = "species"
 
 if __name__ == "__main__":

@@ -53,7 +53,7 @@ class Experiment:
             "confusion_matrix": cm.tolist(),
         }
 
-        output_path = f"{self.output_dir}/{self.model_config_path.split('/')[-1].replace('.yaml', '_metrics.json')}"
+        output_path = f"{self.output_dir}/metrics/{self.model_config_path.split('/')[-1].replace('.yaml', '_metrics.json')}"
 
         with open(output_path, "w") as file:
             json.dump(metrics, file, indent=4)
@@ -62,6 +62,6 @@ class Experiment:
         return metrics
 
     def save_model(self, model_name):
-        model_path = f"{self.output_dir}/{model_name}.pkl"
+        model_path = f"{self.output_dir}/models/{model_name}.pkl"
         joblib.dump(self.model, model_path)
         print(f"Model saved to {model_path}")
