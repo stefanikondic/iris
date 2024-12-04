@@ -1,0 +1,81 @@
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints
+
+# Virtual Environment
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+*.virtualenv
+
+# Conda Environment Files
+*.conda
+*.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Logs and Temporary Files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.~*
+
+# Output and Build Files
+# outputs/models/
+# outputs/metrics/
+
+
+# Configurations and Secrets
+# *.yaml
+# *.yml
+secrets.json
+.env
+
+# Compiled Files
+*.so
+*.dll
+*.dylib
+
+# Editor Directories
+.vscode/
+.idea/
+
+# Testing and Coverage
+.coverage
+*.coverage
+.cache/
+nosetests.xml
+coverage.xml
+*.egg-info/
+.tox/
+
+# Python Package Builds
+dist/
+build/
+*.egg
+
+# Ignore Pickle Files
+*.pkl
+
+# Ignore Large Dataset Files
+*.csv
+*.tsv
+*.xls
+*.xlsx
+*.h5
+*.db
+
+
