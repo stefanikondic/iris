@@ -5,8 +5,8 @@ from src.data.experiment import Experiment
 
 
 class Pipeline:
-    def __init__(self, data_path, experiments_dir, output_dir):
-        self.data_processor = DataProcessor(data_path)
+    def __init__(self, data_path, target, experiments_dir, output_dir):
+        self.data_processor = DataProcessor(data_path, target)
         self.experiments_dir = experiments_dir
         self.output_dir = output_dir
 
