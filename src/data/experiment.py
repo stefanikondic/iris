@@ -3,12 +3,15 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 import joblib
 import json
 
+from sklearn.model_selection import GridSearchCV
+
 
 class Experiment:
     def __init__(self, model_config_path, output_dir):
         self.model_config_path = model_config_path
         self.output_dir = output_dir
         self.model = None
+        self.best_params = None
 
     def load_model_config(self):
         with open(self.model_config_path, "r") as file:
@@ -16,7 +19,7 @@ class Experiment:
 
         return config
 
-    def initialize_model(self):
+    def initialize_model(self, grid_search=False):
         config = self.load_model_config()
         model_name = config["model"]["name"]
         params = config["model"]["parameters"]
@@ -24,21 +27,36 @@ class Experiment:
         if model_name == "RandomForestClassifier":
             from sklearn.ensemble import RandomForestClassifier
 
-            self.model = RandomForestClassifier(**params)
+            self.model = RandomForestClassifier()
         elif model_name == "SVC":
             from sklearn.svm import SVC
 
-            self.model = SVC(**params)
+            self.model = SVC()
         elif model_name == "KNeighborsClassifier":
             from sklearn.neighbors import KNeighborsClassifier
 
-            self.model = KNeighborsClassifier(**params)
+            self.model = KNeighborsClassifier()
         else:
             raise ValueError(f"Unsupported model: {model_name}")
 
-    def train(self, X_train, y_train):
+        if grid_search:
+            print(f"Performing Grid Search for model {model_name}...")
+            grid_search = GridSearchCV(self.model, params, cv=5, scorring="accuracy")
+            return grid_search
+        else:
+            self.model.set_params(**params)
+
+    def train(self, X_train, y_train, grid_search=False):
         if not self.model:
-            self.initialize_model()
+            self.initialize_model(grid_search=grid_search)
+
+        if isinstance(self.model, GridSearchCV):
+            self.model.fit(X_train, y_train)
+            self.best_params = self.model.best_params_
+            print(f"Best parameters for {self.model.estimator}: {self.best_params}")
+            self.model = self.model.best_estimator_
+
+        else:
             self.model.fit(X_train, y_train)
 
     def evaluate(self, X_test, y_test):
