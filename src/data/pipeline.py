@@ -1,6 +1,7 @@
 import json
 import os
 
+from colorama import Fore, Style
 import pandas as pd
 
 from src.data.data_processor import DataProcessor
@@ -21,6 +22,7 @@ class Pipeline:
             if config_file.endswith(".yaml"):
                 config_path = os.path.join(self.experiments_dir, config_file)
                 experiment = Experiment(config_path, self.output_dir)
+                print(f"Type of exp: {type(experiment)}")
 
                 experiment.train(X_train, y_train, grid_search=grid_search)
                 metrics = experiment.evaluate(X_test, y_test)
@@ -32,6 +34,9 @@ class Pipeline:
                         "best_params": experiment.best_params if grid_search else None,
                     }
                 )
+
+        self.save_report()
+        self.generate_csv_report()
 
     def save_report(self):
         report_path = os.path.join(self.output_dir, "summary_report.json")

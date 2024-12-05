@@ -1,6 +1,7 @@
 model:
-  name: "SVC"
+  name: SVC
   parameters:
-    kernel: 'rbf'
-    gamma: "scale"
-    random_state: 42
+    kernel: ["linear", "poly", "rbf", "sigmoid"]
+    C: [0.1, 1, 10, 100]
+    gamma: ["scale", "auto"]
+    degree: [2, 3, 4]
