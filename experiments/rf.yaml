@@ -2,5 +2,5 @@ model:
   name: "RandomForestClassifier"
   parameters:
     n_estimators: [50, 100, 150]
-    max_depth: [3, 5, None]
+    max_depth: [3, 5, null]
     random_state: [42]

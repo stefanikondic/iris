@@ -1,9 +1,14 @@
-import yaml
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-import joblib
 import json
 
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
+
+import yaml
+import joblib
+from colorama import Fore, Style
 
 
 class Experiment:
@@ -23,17 +28,15 @@ class Experiment:
         config = self.load_model_config()
         model_name = config["model"]["name"]
         params = config["model"]["parameters"]
+        print(Fore.GREEN + f"{params}" + Style.RESET_ALL)
 
         if model_name == "RandomForestClassifier":
-            from sklearn.ensemble import RandomForestClassifier
 
             self.model = RandomForestClassifier()
         elif model_name == "SVC":
-            from sklearn.svm import SVC
 
             self.model = SVC()
         elif model_name == "KNeighborsClassifier":
-            from sklearn.neighbors import KNeighborsClassifier
 
             self.model = KNeighborsClassifier()
         else:
@@ -41,10 +44,13 @@ class Experiment:
 
         if grid_search:
             print(f"Performing Grid Search for model {model_name}...")
-            grid_search = GridSearchCV(self.model, params, cv=5, scorring="accuracy")
+
+            grid_search = GridSearchCV(
+                self.model, params, cv=5, scoring="accuracy", verbose=2
+            )
             return grid_search
-        else:
-            self.model.set_params(**params)
+
+        self.model.set_params(**params)
 
     def train(self, X_train, y_train, grid_search=False):
         if not self.model:

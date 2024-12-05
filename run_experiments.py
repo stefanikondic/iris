@@ -7,4 +7,4 @@ TARGET = "species"
 
 if __name__ == "__main__":
     pipeline = Pipeline(DATA_PATH, TARGET, EXPERIMENTS_DIR, OUTPUT_DIR)
-    pipeline.run(scale=True)
+    pipeline.run(scale=True, grid_search=True)
