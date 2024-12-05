@@ -1,0 +1,6 @@
+model:
+  name: LogisticRegression
+  parameters:
+    penalty: ["l2", null]
+    C: [0.1, 1, 10, 100]
+    max_iter: [100, 200, 300]
