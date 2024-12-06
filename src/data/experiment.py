@@ -1,11 +1,10 @@
 import logging
 import os
 import json
-from sklearn.linear_model import LogisticRegression, SGDClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 import yaml
 import joblib
-from colorama import Fore, Style
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier

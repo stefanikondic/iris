@@ -1,15 +1,16 @@
 name: iris-analysis-env
 channels:
-  - defaults
-  - conda-forge
+- defaults
+- conda-forge
 dependencies:
-  - python=3.9
-  - pandas
-  - numpy
-  - scikit-learn
-  - matplotlib
-  - seaborn
-  - pyyaml
-  - joblib
-  - jupyter
-  - ipykernel
+- python=3.9
+- pandas
+- numpy
+- scikit-learn
+- matplotlib
+- seaborn
+- pyyaml
+- joblib
+- jupyter
+- ipykernel
+- colorama
