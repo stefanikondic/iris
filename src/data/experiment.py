@@ -26,13 +26,30 @@ SUPPORTED_MODELS = {
     "SVC": SVC(),
     "KNeighborsClassifier": KNeighborsClassifier(),
     "LogisticRegression": LogisticRegression(),
-    "DecisionTreeClassifier": DecisionTreeClassifier(),
-    "GradientBoostingClassifier": GradientBoostingClassifier(),
 }
 
 
 class Experiment:
+    """
+    A class to handle machine learning model experiments, including training, evaluation,
+    and hyperparameter tuning using GridSearchCV.
+
+    Attributes:
+        model_config_path (str): Path to the YAML file containing model configuration.
+        output_dir (str): Directory to save model artifacts and metrics.
+        model (object): The initialized machine learning model.
+        best_params (dict): The best parameters found by GridSearchCV, if applicable.
+    """
+
     def __init__(self, model_config_path, output_dir):
+        """
+        Initializes the Experiment class with configuration and output directories.
+
+        Args:
+            model_config_path (str): Path to the YAML configuration file.
+            output_dir (str): Path to the directory for saving outputs (e.g., metrics, models).
+        """
+
         self.model_config_path = model_config_path
         self.output_dir = output_dir
         self.model = None
@@ -50,6 +67,16 @@ class Experiment:
         print(SUPPORTED_MODELS.keys())
 
     def load_model_config(self):
+        """
+        Loads the model configuration from a YAML file.
+
+        Returns:
+            dict: The loaded model configuration, including model name and hyperparameters.
+
+        Raises:
+            FileNotFoundError: If the YAML file does not exist.
+        """
+
         try:
             with open(self.model_config_path, "r") as file:
                 config = yaml.safe_load(file)
@@ -67,6 +94,20 @@ class Experiment:
             raise
 
     def initialize_model(self, grid_search=False):
+        """
+        Initializes the machine learning model and optionally wraps it with GridSearchCV
+        for hyperparameter tuning.
+
+        Args:
+            grid_search (bool): If True, perform hyperparameter tuning using GridSearchCV.
+
+        Returns:
+            object: The initialized model or a GridSearchCV object if grid_search=True.
+
+        Raises:
+            ValueError: If the model name in the configuration is unsupported.
+        """
+
         config = self.load_model_config()
         model_name = config.get("model", {}).get("name")
         params = config.get("model", {}).get("parameters", {})
@@ -99,6 +140,19 @@ class Experiment:
                 raise
 
     def train(self, X_train, y_train, grid_search=False):
+        """
+        Trains the model using the provided training data. If GridSearchCV is enabled,
+        performs hyperparameter tuning and updates the model to the best estimator.
+
+        Args:
+            X_train (array-like): Training features.
+            y_train (array-like): Training target labels.
+            grid_search (bool): If True, perform hyperparameter tuning using GridSearchCV.
+
+        Returns:
+            None
+        """
+
         if not self.model:
             logging.debug("Initializing model with grid_search=%s", grid_search)
             self.initialize_model(grid_search=grid_search)
@@ -118,6 +172,17 @@ class Experiment:
             self.model.fit(X_train, y_train)
 
     def evaluate(self, X_test, y_test):
+        """
+        Evaluates the model on the test dataset and computes metrics.
+
+        Args:
+            X_test (array-like): Test features.
+            y_test (array-like): True labels for the test dataset.
+
+        Returns:
+            dict: A dictionary containing accuracy, classification report, and confusion matrix.
+        """
+
         logging.info("Evaluating model...")
         y_pred = self.model.predict(X_test)
         accuracy = accuracy_score(y_test, y_pred)
@@ -147,6 +212,16 @@ class Experiment:
         return metrics
 
     def save_model(self, model_name):
+        """
+        Saves the trained model to the specified output directory.
+
+        Args:
+            model_name (str): Name of the model for the saved file.
+
+        Returns:
+            None
+        """
+
         model_path = os.path.join(self.output_dir, "models", f"{model_name}.pkl")
         try:
             joblib.dump(self.model, model_path)
